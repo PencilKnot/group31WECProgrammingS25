@@ -1,6 +1,3 @@
-days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-schedule = {day: [] for day in days}
-
 def has_conflict(a1, a2):
     return not(a1.end >= a2.start or a2.end <= a1.start)
 
@@ -20,6 +17,9 @@ def get_priority(a):
         case 'Tutorial': return 0.75
 
 def optimize_schedule(activity_list):
+    days = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+    schedule = {day: [] for day in days}
+
     # put all school activities with dates into schedule first
     for day in days:
         current_day = []
@@ -42,3 +42,5 @@ def optimize_schedule(activity_list):
             else: i += 1
 
         schedule[day] = current_day;
+
+    return schedule
