@@ -1,3 +1,5 @@
+import json
+
 # Open function to open the file "MyFile1.txt"
 # (same directory) in read mode ("r")
 # if the file is in a different directory provide the relative path
@@ -15,3 +17,20 @@ file1_w.write("Hello") # writes hello to the file without adding a new line
 file1_w.write("Hello\n") # same as above but starts a new line
 file1_w.writelines(L) # pass in a list of strings and python writes each element of the list as a new line
 
+file1_w.close()
+
+# RIPPED STRAIGHT FROM GFG
+
+dictionary = {
+    "name": "sathiyajith",
+    "rollno": 56,
+    "cgpa": 8.6,
+    "phonenumber": "9976770500"
+}
+
+# Serializing json
+json_object = json.dumps(dictionary, indent=4)
+
+# Writing to sample.json
+with open("sample.json", "w") as outfile:
+    outfile.write(json_object)
