@@ -4,7 +4,7 @@ class Activity:
         self.category = category
         self.school_ac = school_ac
         self.location = location
-        self.oncampus = oncampus
+        self.oncampus = oncampus 
         self.start = start
         self.end = end
         self.day = day
