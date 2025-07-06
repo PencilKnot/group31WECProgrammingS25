@@ -5,7 +5,7 @@ from activity import Activity
 # (same directory) in read mode ("r")
 # if the file is in a different directory provide the relative path
 
-file1 = open("MyFile1.txt","r")
+file1 = open("sampleinput.txt","r")
 file_content = file1.read() # stores the entire file content of the file as a string into the file_content variable
 file_content = file_content.replace('(', '').replace(')', '') #remove brackets
 file_lines = file1.readlines() # stores each line of the file as an element of a list
@@ -17,13 +17,27 @@ def split_time(times):
     time = times.split(':') #splits time into where time[0] = hours and time[1] = minutes
     return (time[0]*60 + time[1])
 
-Activity_list = []
+def assign_attributes(line, obj):
+    '''
+    assigns school_ac, oncampus and location attributes for socials/ECs
+    '''
+    obj.school_ac = 0
+    obj.location = line[1]
+    if(line[2]=="false"):
+        obj.oncampus = False
+    else:
+        obj.oncampus = True
+
+
+
+Activity_list = []#initial empty list of activities
 num_school = None
 num_EC = None
 num_social = None
 
 for i in range (len(file_lines)):
     line = file_lines[i].split(',') #split things by comma 
+
     if "SCHOOL" in line:
         num_school = line[1] #get number of school events
         school_start = i
@@ -36,46 +50,38 @@ for i in range (len(file_lines)):
     else:
         event_obj = Activity()
         event_obj.name = line[0]
+
         if(num_school is not None):
             if(i>school_start and i<=school_start+num_school):
                 event_obj.category = "School"
-                
+                event_obj.school_ac = line[1]
+                event_obj.location = line[2]
+                event_obj.oncampus = True
+                event_obj.day = line[4]
+        
         if(num_EC is not None):
             if(i> EC_start and i<=EC_start+num_EC):
                 event_obj.category = "EC"
-        if(num_EC is not None):
-            if(i> EC_start and i<=EC_start+num_EC):
+                assign_attributes(line, event_obj)
+        
+        if(num_social is not None):
+            if(i> social_start and i<=social_start+num_social):
                 event_obj.category = "Social"
-        for j in range (len(line)):
-            if ':' in line[j]: #finds the times
-                times = line[j].split('-') #split start and end times
-                event_obj.start = split_time(times[0]) #start time as an integer
-                event_obj.end = split_time(times[1]) #end time as an integer
-
+                assign_attributes(line, event_obj)
+                
+        times = line[3].split('-') #split start and end times
+        event_obj.start = split_time(times[0]) #start time as an integer
+        event_obj.end = split_time(times[1]) #end time as an integer
+        Activity_list.append(event_obj)
         
-
-
-
-
-
+     
+for x in range (len(Activity_list)):
+    print(Activity_list[x].name, '|', Activity_list[x].category, '|', Activity_list[x].school_ac, '|', Activity_list[x].location, '|', Activity_list[x].oncampus, '|', Activity_list[x].start, '|', Activity_list[x].end, '|', Activity_list[x].day)
     
-        
-
-
-
 file1.close() # make sure to close the file before opening in different mode
-
-file1_w = open("MyFile1.txt", "w") # deletes all contents of the file and opens it for write mode ("w")
-
-L = ["Hello\n", "World\n"]
-
-file1_w.write("Hello") # writes hello to the file without adding a new line
-file1_w.write("Hello\n") # same as above but starts a new line
-file1_w.writelines(L) # pass in a list of strings and python writes each element of the list as a new line
-
-file1_w.close()
-
 # RIPPED STRAIGHT FROM GFG
+
+'''
 
 dictionary = {
     "name": "sathiyajith",
@@ -92,6 +98,6 @@ json_object = json.dumps(dictionary, indent=4)
 # Writing to sample.json
 with open("sample.json", "w") as outfile:
     outfile.write(json_object)
-
+'''
 
 
