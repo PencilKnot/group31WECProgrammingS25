@@ -1,6 +1,7 @@
 import json
 from activity import Activity
 
+
 # Open function to open the file "MyFile1.txt"
 # (same directory) in read mode ("r")
 # if the file is in a different directory provide the relative path
@@ -30,7 +31,7 @@ def assign_attributes(line, obj):
     times = line[3].split('-') #split start and end times
     obj.start = split_time(times[0]) #start time as an integer
     obj.end = split_time(times[1]) #end time as an integer
-    
+
 
 
 
@@ -80,6 +81,94 @@ for i in range (len(file_lines)):
 
         Activity_list.append(event_obj)
 
+
+
+import algorithm
+
+monday= {
+
+}
+
+tuesday= {
+
+}
+
+wednesday= {
+
+}
+
+thursday= {
+
+}
+
+friday= {
+
+}
+
+saturday= {
+
+}
+
+sunday= {
+
+}
+
+scheduledict = {
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday, 
+    saturday, 
+    sunday,
+}
+
+mondaylist = []
+tuesdaylist = []
+wednesdaylist = []
+thursdaylist = []
+fridaylist = []
+saturdaylist = []
+sundaylist = []
+currentitem = []
+
+
+schedule = algorithm.optimize_schedule()
+listofdicts = [monday,tuesday,wednesday,thursday,friday,saturday,sunday]
+listoflists = [mondaylist,tuesdaylist,wednesdaylist,thursdaylist,fridaylist,saturdaylist,sundaylist]
+listofacronyms = ["Mo","Tu","We","Th","Fr","Sa","Su"]
+
+
+for activity in schedule:
+
+    activity_day = activity.day
+
+    for acronym_index in range(len(listofacronyms)-1):
+        curr_acronym = listofacronyms[acronym_index]
+        if activity_day == curr_acronym:
+            currentitem.append(activity.name)
+            currentitem.append(activity.start)
+            currentitem.append(activity.end)
+            listoflists[acronym_index].append(currentitem)
+            currentitem.clear()
+            
+currentlistindict = []
+
+#formats each dict
+for dayindex in range(len(listoflists)-1):
+    currentlist = listoflists[dayindex]
+    currentdict = listofdicts[dayindex]
+    for activity in currentlist:
+        currentlistindict = activity[1:]
+        currentdict.update({activity[0]: currentlistindict})
+        currentlistindict.clear()
+
+# Serializing json
+json_object = json.dumps(scheduledict, indent=4)
+
+# Writing to sample.json
+with open("sample.json", "w") as outfile:
+    outfile.write(json_object)
             
         
      
