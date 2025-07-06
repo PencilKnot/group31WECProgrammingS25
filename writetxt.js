@@ -28,3 +28,30 @@ fileLines = fileContent.split('\n'); // convert to list again
 //print both versions of the content, as a list or as a plain string
 console.log("File Content as string:", fileContent);
 console.log("File Lines as array:", fileLines);
+
+
+// RIPPED STRAIGHT FROM GEEKS FOR GEEKS 
+const users = require("./users");
+
+// Defining new user 
+let user =
+{
+    name: "New User",
+    age: 30,
+    language: ["PHP", "Go", "JavaScript"]
+};
+
+// STEP 2: Adding new data to users object 
+users.push(user);
+
+// STEP 3: Writing to a file 
+fs.writeFile(
+    "users.json",
+    JSON.stringify(users),
+    err => {
+        // Checking for errors 
+        if (err) throw err;
+
+        // Success 
+        console.log("Done writing");
+    }); 
